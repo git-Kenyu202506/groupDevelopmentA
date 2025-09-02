@@ -1,0 +1,89 @@
+@charset "UTF-8";
+
+header {
+	position: fixed;
+	top: 20px;
+	right: 50px;
+	font-size: 13px;
+	text-align: right;
+}
+
+h2 {
+	color: red;
+	margin-top: 30px;
+	border-bottom: 1px solid black;
+}
+
+.form {
+		position: relative;
+		width: 700px;
+		height: 500px;
+		text-align: center;
+		margin: 0 auto;
+		font-size: 24px;
+}
+
+label {
+	font-size: 22px;
+	font-weight: bold;
+	margin-right: 50px;
+}
+
+ .form input[type="text"]{
+	width: 250px;
+	height: 35px;
+	font-size: 18px;
+	text-align: center;
+	border-color:black;
+	background-color: lightgrey;
+}
+
+.form input[type="submit"]{
+	width: 100px;
+	height: 35px;
+	margin:0 auto;
+	border: 1px solid  lightgray;
+	margin-top: 20px;
+	margin-bottom: 60px;
+	font-size: 20px;
+	border-color: black;
+}
+
+
+.sakujo {
+	position: absolute;
+	bottom: 50px;
+	left: 200px;
+	background-color: orange;
+}
+
+.modoru {
+	position: absolute;
+	bottom: 50px;
+	right: 200px;
+	background-color: white;
+}
+
+.msg {
+	position: relative;
+}
+
+#lastmsg {
+	position: absolute;
+	top: -200px;
+	left: 520px;
+	font-size: 22px;
+}
+
+#underLine {
+	position: absolute;
+	top: -160px;
+	border-bottom: 1px solid black;
+	width: 100vw;
+}
+
+footer {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+}

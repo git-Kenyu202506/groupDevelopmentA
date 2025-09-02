@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html  xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>削除完了</title>
+<link rel="stylesheet" href="deleteResult.css" />
+</head>
+<body>
+	<header>
+		<div th:text="${session.loginName} + 'さん'"></div>
+		<div th:text="${#temporals.format(session.loginTime, 'yyyy/MM/dd HH:mm:ss')}"></div>
+	</header>
+	<h2>社員情報削除画面（完了）</h2>
+	<div id="result">削除が完了しました</div>
+	<div id="topmenu">
+		<a href="/menu">トップメニューに戻る</a>
+	</div>
+	<footer>JavaStudy©︎2025</footer>
+</body>
+</html>
