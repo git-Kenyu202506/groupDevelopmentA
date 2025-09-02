@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>トップメニュー</title>
+<link rel="stylesheet" href="menu.css" />
+</head>
+<body>
+	<header>
+		<div th:text="${session.loginName} + 'さん'"></div>
+		<div th:text="${#temporals.format(session.loginTime, 'yyyy/MM/dd HH:mm:ss')}"></div>
+	</header> 
+	<h2>トップメニュー</h2>
+	<div class="employeeurl">
+		<a href="">社員情報検索</a>
+		<a href="/deleteForm">社員情報削除</a>
+		<a href="">社員情報登録</a>
+		<a href="">社員情報更新</a>
+	</div>
+	<footer>JavaStudy©︎2025</footer>
+</body>
+</html>
