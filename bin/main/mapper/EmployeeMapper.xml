@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.demo.mapper.EmployeeMapper">
+<select id="searchEmployees" parameterType="map" resultType="com.example.demo.entity.Employee">
+    SELECT 
+        employee_id       AS employeeId,
+        employee_name     AS employeeName,
+        age,
+        passwords,
+        DATE_FORMAT(start_date, '%Y%m%d') AS startDate,
+        DATE_FORMAT(end_date, '%Y%m%d')   AS endDate
+    FROM employee
+    <where>
+        <if test="employeeId != null"> AND employee_id = #{employeeId}</if>
+        <if test="employeeName != null and employeeName != ''"> AND employee_name LIKE CONCAT('%', #{employeeName}, '%')</if>
+        <if test="ageFrom != null"> AND age &gt;= #{ageFrom}</if>
+        <if test="ageTo != null"> AND age &lt;= #{ageTo}</if>
+        <if test="startDateFrom != null and startDateFrom != ''">
+            AND start_date &gt;= STR_TO_DATE(#{startDateFrom}, '%Y%m%d')
+        </if>
+        <if test="startDateTo != null and startDateTo != ''">
+            AND start_date &lt;= STR_TO_DATE(#{startDateTo}, '%Y%m%d')
+        </if>
+        <if test="endDateFrom != null and endDateFrom != ''">
+            AND end_date &gt;= STR_TO_DATE(#{endDateFrom}, '%Y%m%d')
+        </if>
+        <if test="endDateTo != null and endDateTo != ''">
+            AND end_date &lt;= STR_TO_DATE(#{endDateTo}, '%Y%m%d')
+        </if>
+    </where>
+</select>
+</mapper>

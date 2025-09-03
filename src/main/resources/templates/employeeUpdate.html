@@ -1,0 +1,35 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>社員情報確認・更新</title>
+</head>
+<body>
+	<div class="login-info" th:if="${session.loginName != null}">
+	      ログイン名: <span th:text="${session.loginName}"></span><br>
+	      ログイン時刻: <span th:text="${session.loginTime}"></span>
+	  </div>
+<h1>社員情報確認・更新</h1>
+
+<div th:if="${employee != null}">
+    <p>以下の社員を更新します：</p>
+    <p>ID: <span th:text="${employee.employeeId}"></span></p>
+    <p>名前: <span th:text="${employee.employeeName}"></span></p>
+    <p>年齢: <span th:text="${employee.age}"></span></p>
+    <p>入社日: <span th:text="${employee.startDate}"></span></p>
+    <p>退職日: <span th:text="${employee.endDate}"></span></p>
+</div>
+
+<div th:if="${employee == null}">
+    <p>更新対象の社員が選択されていません。</p>
+</div>
+<form th:action="@{/employees}" method="get">
+    <button type="submit">検索画面に戻る</button>
+</form>
+
+</body>
+</html>
+
+
