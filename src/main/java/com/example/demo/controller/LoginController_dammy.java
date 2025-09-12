@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-public class LoginController {
+public class LoginController_dammy {
 
     @GetMapping("/login")
     public String loginPage() {
-        return "login"; 
+        return "login_dammy"; 
     }
 
     @PostMapping("/login")

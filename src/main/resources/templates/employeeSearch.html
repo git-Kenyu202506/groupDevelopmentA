@@ -4,71 +4,30 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-
 	<title>社員検索</title>
 	<link rel="stylesheet" th:href="@{/search.css}">
-
-
-
 	<script>
+		// 数字チェック
 		function isNumeric(value) {
-			return /^\d*$/.test(value); // 0-9 の数字のみ
+			return /^\d*$/.test(value);
 		}
-		function isValidDateFormat(value) {
-			return /^\d{8}$/.test(value); // 8桁の数字かどうか
-		}
-		function checkRange(form) {
-			// 社員IDチェック
-			let employeeId = form.employeeId.value;
-			if (employeeId && !isNumeric(employeeId)) {
-				alert("社員IDは数字のみで入力してください");
-				form.employeeId.focus();
-				return false;
-			}
 
-			// 年齢チェック
-			let ageFrom = form.ageFrom.value;
-			let ageTo = form.ageTo.value;
-			if ((ageFrom && !isNumeric(ageFrom)) || (ageTo && !isNumeric(ageTo))) {
-				alert("年齢は数字のみで入力してください");
-				if (!isNumeric(ageFrom)) form.ageFrom.focus();
-				else form.ageTo.focus();
-				return false;
-			}
+		// 日付チェック（input type="date" 用）
+		function checkValidDate(input) {
+			const val = input.value.trim();
+			if (!val) return true; // 空ならOK
 
-			// 年齢範囲チェック
-			if (ageFrom && ageTo && parseInt(ageFrom) > parseInt(ageTo)) {
-				alert("年齢範囲が不正です");
-				return false;
-			}
+			// yyyy-mm-dd形式だけを厳密チェック
+			const match = /^(\d{4})-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.exec(val);
+			if (!match) return false;
 
-			let startFrom = form.startDateFrom.value;
-			let startTo = form.startDateTo.value;
-			if (startFrom && !isValidDateFormat(startFrom)) {
-				alert("入社日の開始日付は yyyyMMdd 形式で入力してください");
-				return false;
-			}
-			if (startTo && !isValidDateFormat(startTo)) {
-				alert("入社日の終了日付は yyyyMMdd 形式で入力してください");
-				return false;
-			}
-			if (startFrom && startTo && startFrom > startTo) {
-				alert("入社日範囲が不正です");
-				return false;
-			}
+			const year = parseInt(match[1], 10);
+			const month = parseInt(match[2], 10);
+			const day = parseInt(match[3], 10);
 
-			let endFrom = form.endDateFrom.value;
-			let endTo = form.endDateTo.value;
-			if (endFrom && !isValidDateFormat(endFrom)) {
-				alert("退職日の開始日付は yyyyMMdd 形式で入力してください");
-				return false;
-			}
-			if (endTo && !isValidDateFormat(endTo)) {
-				alert("退職日の終了日付は yyyyMMdd 形式で入力してください");
-				return false;
-			}
-			if (endFrom && endTo && endFrom > endTo) {
-				alert("退職日範囲が不正です");
+			// 実在する日付か確認
+			const date = new Date(year, month - 1, day);
+			if (date.getFullYear() !== year || date.getMonth() + 1 !== month || date.getDate() !== day) {
 				return false;
 			}
 
@@ -76,26 +35,193 @@
 		}
 
 
+		// 日付チェック（input type="text" yyyy/mm/dd 用）
+		function checkValidDateYMD(input) {
+			const val = input.value.trim();
+			if (!val) return true; // 空ならOK
+
+			// yyyy/mm/dd の形式チェック
+			const match = /^(\d{4})\/(0[1-9]|1[0-2])\/(0[1-9]|[12]\d|3[01])$/.exec(val);
+			if (!match) return false;
+
+			const year = parseInt(match[1], 10);
+			const month = parseInt(match[2], 10);
+			const day = parseInt(match[3], 10);
+
+			const date = new Date(year, month - 1, day);
+			return (
+				date.getFullYear() === year &&
+				date.getMonth() + 1 === month &&
+				date.getDate() === day
+			);
+		}
+
+		// フォーム送信前の範囲チェック
+		function checkRange(form) {
+			// 社員ID
+			const employeeId = form.employeeId.value.trim();
+			if (employeeId && !isNumeric(employeeId)) {
+				alert("社員IDは数字のみで入力してください");
+				form.employeeId.focus();
+				return false;
+			}
+
+			// 年齢
+			const ageFrom = form.ageFrom.value.trim();
+			const ageTo = form.ageTo.value.trim();
+			if ((ageFrom && !isNumeric(ageFrom)) || (ageTo && !isNumeric(ageTo))) {
+				alert("年齢は数字のみで入力してください");
+				if (!isNumeric(ageFrom)) form.ageFrom.focus();
+				else form.ageTo.focus();
+				return false;
+			}
+			if (ageFrom && ageTo && parseInt(ageFrom) > parseInt(ageTo)) {
+				alert("年齢範囲が不正です");
+				form.ageFrom.focus();
+				return false;
+			}
+
+			// 入社日（date型）
+			const startFrom = form.startDateFrom;
+			const startTo = form.startDateTo;
+			if (!checkValidDate(startFrom)) {
+				alert("入社日の形式が不正です。存在する yyyy-mm-dd を入力してください。");
+				startFrom.focus();
+				return false;
+			}
+			if (!checkValidDate(startTo)) {
+				alert("入社日の形式が不正です。存在する yyyy-mm-dd を入力してください。");
+				startTo.focus();
+				return false;
+			}
+			if (startFrom.value && startTo.value) {
+				if (new Date(startFrom.value) > new Date(startTo.value)) {
+					alert("入社日範囲が不正です");
+					startFrom.focus();
+					return false;
+				}
+			}
+
+			// 退社日
+			const endFrom = form.endDateFrom;
+			const endTo = form.endDateTo;
+			if (!checkValidDate(endFrom)) {
+				alert("退社日の形式が不正です。存在する yyyy-mm-dd を入力してください。");
+				endFrom.focus();
+				return false;
+			}
+			if (!checkValidDate(endTo)) {
+				alert("退社日の形式が不正です。存在する yyyy-mm-dd を入力してください。");
+				endTo.focus();
+				return false;
+			}
+			if (endFrom.value && endTo.value) {
+				if (new Date(endFrom.value) > new Date(endTo.value)) {
+					alert("退職日範囲が不正です");
+					endFrom.focus();
+					return false;
+				}
+			}
+
+
+			// 入社日（text型）
+			//	const startFrom = form.startDateFrom;
+			//	const startTo = form.startDateTo;
+			//	if (!checkValidDateYMD(startFrom)) {
+			//		alert("入社日の形式が不正です。存在する yyyy/mm/dd を入力してください。");
+			//		startFrom.focus();
+			//		return false;
+			//	}
+			//	if (!checkValidDateYMD(startTo)) {
+			//		alert("入社日の形式が不正です。存在する yyyy/mm/dd を入力してください。");
+			//		startTo.focus();
+			//		return false;
+			//	}
+			//	if (startFrom.value && startTo.value) {
+			//		const startFromDate = new Date(startFrom.value.replace(/\//g, "-"));
+			//		const startToDate = new Date(startTo.value.replace(/\//g, "-"));
+			//		if (startFromDate > startToDate) {
+			//			alert("入社日範囲が不正です");
+			//			startFrom.focus();
+			//			return false;
+			//		}
+			//	}
+
+			// 退社日
+			//	const endFrom = form.endDateFrom;
+			//	const endTo = form.endDateTo;
+			//	if (!checkValidDateYMD(endFrom)) {
+			//		alert("退社日の形式が不正です。存在する yyyy/mm/dd を入力してください。");
+			//		endFrom.focus();
+			//		return false;
+			//	}
+			//	if (!checkValidDateYMD(endTo)) {
+			//		alert("退社日の形式が不正です。存在する yyyy/mm/dd を入力してください。");
+			//		endTo.focus();
+			//		return false;
+			//	}
+			//	if (endFrom.value && endTo.value) {
+			//		const endFromDate = new Date(endFrom.value.replace(/\//g, "-"));
+			//		const endToDate = new Date(endTo.value.replace(/\//g, "-"));
+			//		if (endFromDate > endToDate) {
+			//			alert("退社日範囲が不正です");
+			//			endFrom.focus();
+			//			return false;
+			//		}
+			//	}
+
+			//	return true;
+
+
+
+		}
+
+
+		//読み込み字時の処理
 		window.onload = function () {
-			// 入力値を保存
+			const form = document.querySelector(".search-form");
+			const deleteBtn = document.getElementById("deleteBtn");
+
+			// 入力値保持
 			document.querySelectorAll(".search-form input").forEach(el => {
 				if (sessionStorage.getItem(el.name)) {
 					el.value = sessionStorage.getItem(el.name);
 				}
-				el.addEventListener("input", () => {
-					sessionStorage.setItem(el.name, el.value);
-				});
+
+				if (el.type !== "reset") {
+					el.addEventListener("input", () => {
+						sessionStorage.setItem(el.name, el.value);
+						toggleDeleteBtn();
+					});
+				}
 			});
 
-			// リセットボタン押下時は入力値も消す
-			document.querySelector(".search-form").addEventListener("reset", () => {
+			// リセット時に sessionStorage クリア
+			form.addEventListener("reset", () => {
 				document.querySelectorAll(".search-form input").forEach(el => {
-					sessionStorage.removeItem(el.name);
+					if (el.type !== "reset") {
+						sessionStorage.removeItem(el.name);
+						setTimeout(() => {el.value = "";}, 0);
+					}
 				});
+				toggleDeleteBtn();
 			});
+
+			// 削除ボタン制御
+			document.addEventListener("change", (e) => {
+				if (e.target.name === 'employeeIds') toggleDeleteBtn();
+			});
+
+			function toggleDeleteBtn() {
+				const checkboxes = document.querySelectorAll("input[name='employeeIds']");
+				const anyChecked = Array.from(checkboxes).some(cb => cb.checked);
+				if (deleteBtn) deleteBtn.style.display = anyChecked ? "inline-block" : "none";
+			}
+
+			toggleDeleteBtn();
 		};
 
-		// ✅ 検索画面以外に移動するなら 入力値 をクリア
+		// 他ページ遷移時に sessionStorage をクリア
 		document.addEventListener("click", (e) => {
 			const target = e.target.closest("a, button[type='submit'], input[type='submit']");
 			if (target) {
@@ -106,6 +232,9 @@
 			}
 		});
 	</script>
+
+
+
 </head>
 
 <body>
@@ -116,6 +245,7 @@
 			<span th:text="'ログイン時刻: ' + ${session.loginTime}"></span>
 		</div>
 	</div>
+
 	<div class="btn-box">
 		<form th:action="@{/employees/menu}" method="get" style="display:inline">
 			<button type="submit">メニュー</button>
@@ -124,35 +254,59 @@
 			<button type="submit" class="insert-btn">登録画面</button>
 		</form>
 	</div>
-	<form th:action="@{/employees/search}" method="post" onsubmit="return checkRange(this)" class="search-form">
-		<!-- フォーム入力部分 -->
 
+	<form th:action="@{/employees/search}" method="post" onsubmit="return checkRange(this)" class="search-form">
 		<div class="form-inputs">
 			<div class="form-col">
-				<label>社員ID: <input type="text" name="employeeId"></label><br>
-				<label>社員名: <input type="text" name="employeeName"></label>
+				<label>社員ID: <input type="text" name="employeeId" th:value="${employeeId}"></label><br>
+				<label>社員名: <input type="text" name="employeeName" th:value="${employeeName}"></label>
 			</div>
-
 			<div class="form-col">
-				<label>年齢　 : <input type="text" name="ageFrom"> ～ <input type="text" name="ageTo"></label><br>
-				<label>入社日 : <input type="text" name="startDateFrom" placeholder="yyyyMMdd"> ～ <input type="text"
-						name="startDateTo" placeholder="yyyyMMdd"></label><br>
-				<label>退職日 : <input type="text" name="endDateFrom" placeholder="yyyyMMdd"> ～ <input type="text"
-						name="endDateTo" placeholder="yyyyMMdd"></label>
+				<label>年齢 　: <input type="text" name="ageFrom" th:value="${ageFrom}"> ～ <input type="text" name="ageTo"
+						th:value="${ageTo}"></label><br>
+
+
+<!--				labelがdataの場合-->
+				<label>入社日 :
+					<input type="date" name="startDateFrom" min="1900-01-01" max="2100-12-31">
+					～
+					<input type="date" name="startDateTo" min="1900-01-01" max="2100-12-31">
+				</label>
+
+				<label>退社日 :
+					<input type="date" name="endDateFrom" min="1900-01-01" max="2100-12-31">
+					～
+					<input type="date" name="endDateTo" min="1900-01-01" max="2100-12-31">
+				</label>
+
+
+				<!--										labelがtextの場合-->
+				<!--				<label>入社日 :-->
+				<!--					<input type="text" name="startDateFrom" placeholder="yyyy/mm/dd">-->
+				<!--					～-->
+				<!--					<input type="text" name="startDateTo" placeholder="yyyy/mm/dd">-->
+				<!--				</label>-->
+
+				<!--				<label>退社日 :-->
+				<!--					<input type="text" name="endDateFrom" placeholder="yyyy/mm/dd">-->
+				<!--					～-->
+				<!--					<input type="text" name="endDateTo" placeholder="yyyy/mm/dd">-->
+				<!--				</label>-->
+
+
+
 			</div>
 		</div>
-
-
 
 		<div class="form-buttons">
 			<button type="submit" class="orange-btn">検索</button><br>
 			<input type="reset" value="クリア" class="reset-btn">
 		</div>
 	</form>
-
-
 	<div th:if="${employees != null}" class="table-box">
 		<p><span th:text="${count}"></span>件</p>
+		<p style="color:red" th:if="${count == 0}">該当者なし</p>
+
 		<form th:action="@{/employees/delete}" method="post" id="employeeForm">
 			<div class="table-wrapper">
 				<table th:if="${count > 0}" class="employee-table">
@@ -171,29 +325,24 @@
 						</td>
 						<td th:text="${emp.employeeName}"></td>
 						<td th:text="${emp.age}"></td>
-						<td th:text="${emp.startDate}"></td>
-						<td th:text="${emp.endDate}"></td>
+						<td th:text="${emp.startDate != null ? #temporals.format(emp.startDate, 'yyyy/MM/dd') : ''}">
+						</td>
+						<td th:text="${emp.endDate != null ? #temporals.format(emp.endDate, 'yyyy/MM/dd') : ''}"></td>
 					</tr>
 				</table>
 
-				<!-- 削除ボタン-->
-				<div th:if="${count > 0}" class="delete-btn-wrapper">
-					<button type="submit" class="btn delete-btn">削除</button>
-				</div>
 
-
+				<button type="submit" id="deleteBtn">削除</button>
 			</div>
 		</form>
-
-		<!-- 該当なし-->
-
-		<p style="color:red" th:if="${count == 0}">該当者なし</p>
 	</div>
-
 	<footer>
-		<p>groupDevelopmentA &copy; 2025 </p>
-	</footer>
+		<div class="footer">
+			<p>groupDevelopmentA&copy; 2025 </p>
 
+		</div>
+	</footer>
 </body>
 
 </html>
+

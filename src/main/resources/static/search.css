@@ -69,6 +69,15 @@ h1 {
 
 }
 
+/* 入社日・退職日の入力欄を大きくする */
+input[type="date"] {
+    width: 150px;       
+    padding: 12px 35px;   
+    font-size: 14px;    
+
+    border: 1px solid black; 
+}
+
 
 
 .form-inputs input[type="number"] {
@@ -118,14 +127,20 @@ h1 {
 	padding: 12px 24px;
 	font-size: 16px;
 }
+.table-wrapper {
+    position: relative;
+}
+#deleteBtn {
+    position: absolute;
+    top: 0;
+    right: 0;
 
-.delete-btn {
+    display: none; /* チェックボックス選択時のみ表示 */
+	
 	background-color: yellow;
-	padding: 12px 35px;
-
+	padding: 25px 65px;
 	font-size: 16px;
-
-
+	margin-right: 5px;
 }
 
 .update-btn {
@@ -197,3 +212,4 @@ footer p {
 	flex-direction: column;
 	gap: 10px;
 }
+
