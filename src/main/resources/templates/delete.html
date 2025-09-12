@@ -22,14 +22,18 @@
 			</div>
 			<input type="submit" value="削除" class="sakujo">
 		</form>
-		<form th:action="@{/deleteForm}" method="get">
+		<form th:action="@{/back}" method="post">
 			<input type="submit" value="戻る" class="modoru">	
+			<div  th:each="id : ${ids}">
+				<input type="hidden" name="employee_id" th:value="${id}">
+			</div>
+			<input type="hidden" name="returnPage" th:value="${returnPage}">
 		</form>
 	</div>
 	<div class="msg">
 		<div id="lastmsg">こちらを削除します。よろしいですか？</div>
 		<div id="underLine"></div>
 	</div>
-	<footer>JavaStudy©︎2025</footer>
+	<footer>JavaStudy TeamA©︎2025</footer>
 </body>
 </html>

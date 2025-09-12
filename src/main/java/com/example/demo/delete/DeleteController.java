@@ -28,7 +28,6 @@ public class DeleteController {
 		m.addAttribute("loginTime", loginTime);
 	}
 	
-	
 	@GetMapping("/menu")
 	public String showMenu() {
 		return "menu";
@@ -37,16 +36,24 @@ public class DeleteController {
 	@RequestMapping("/deleteForm")
 	public String showDeleteForm(Model m) {
 		setSessionInfo(m);
+		
 		return "deleteForm";
 	}
 	
 	@PostMapping("/delete")
 	public String showDelete(Model m,
-											@RequestParam("employee_id")List<String> employee_ids
+											@RequestParam(value = "employee_id", required = false)List<String> employee_ids,
+											@RequestParam("returnPage") String returnPage
 											) {
 		setSessionInfo(m);
+		
+		if(employee_ids == null) {
+			employee_ids = new ArrayList<>();
+		}
+		
 		if(employee_ids == null || employee_ids.isEmpty()) {
 			m.addAttribute("msg", "IDが入力されていません");
+			m.addAttribute("employee_ids", "");
 			return "deleteForm";
 		}
 		
@@ -58,18 +65,19 @@ public class DeleteController {
 				continue;
 			}
 				
-		
 			try {
 				int employeeId = Integer.parseInt(id);
 				EmployeeDelete employee = ds.findById(employeeId);
 				
 				if(loginId == employeeId) {
 					m.addAttribute("msg", "このIDは削除できません");
+					m.addAttribute("employee_ids", employee_ids.get(0));
 					return "deleteForm";
 				}
 				
 				if(employee == null) {
 					m.addAttribute("msg", "IDが存在していません");
+					m.addAttribute("employee_ids", employee_ids.get(0));
 					return "deleteForm";
 				}
 				
@@ -77,11 +85,31 @@ public class DeleteController {
 				
 			}catch(NumberFormatException e) {
 				m.addAttribute("msg", "数字で入力してください");
+				m.addAttribute("employee_ids", employee_ids.get(0));
 				return "deleteForm";
 			}
 		}
 		m.addAttribute("ids", ids);
+		m.addAttribute("employee_ids", employee_ids);
+		m.addAttribute("returnPage", returnPage);
 		return "delete";
+	}
+	
+	@PostMapping("/back")
+	public String showBack(Model m,
+									@RequestParam(value = "employee_id", required = false)List<String> employee_ids,
+									@RequestParam("returnPage") String returnPage
+									) {
+		setSessionInfo(m);
+
+		if("deleteForm".equals(returnPage)) {
+			m.addAttribute("returnPage", "deleteForm");
+			m.addAttribute("employee_ids", employee_ids.get(0));
+			return "deleteForm";
+		}else {
+			m.addAttribute("returnPage", "testDeleteForm");
+			return "testDeleteForm";
+		}
 	}
 	
 	@PostMapping("/deleteResult")
@@ -93,4 +121,4 @@ public class DeleteController {
 		m.addAttribute("msg", "削除が完了しました");
 		return "deleteResult";
 	}
-}
+}	
