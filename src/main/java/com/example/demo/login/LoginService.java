@@ -8,8 +8,7 @@ public class LoginService {
 	@Autowired
 	private LoginMapper lm;
 	
-	public Login login(String employee_name, String passwords) {
-		return lm.selectNameAndPassword(employee_name, passwords);
+	public Login login(int employee_id, String passwords) {
+		return lm.selectNameAndPassword(employee_id, passwords);
 	}
-
 }

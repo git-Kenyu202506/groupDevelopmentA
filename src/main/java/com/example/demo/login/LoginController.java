@@ -26,18 +26,25 @@ public class LoginController {
 
 	@PostMapping("/menu")
 	public String enu(Model m,
-									@RequestParam("employee_name") String employee_name,
+									@RequestParam("employee_id") String employee_id,
 									@RequestParam("passwords") String passwords) {
-		Login loginUser = ls.login(employee_name, passwords);
+		try {
+			int loginId = Integer.parseInt(employee_id);
+			Login loginUser = ls.login(loginId, passwords);
+		
 		if(loginUser != null) {
-			session.setAttribute("loginId", loginUser.getId());
-			session.setAttribute("loginName", loginUser.getName());
-			session.setAttribute("loginTime", LocalDateTime.now());
-			m.addAttribute("employee_name", loginUser.getName());
-			m.addAttribute("loginTime",  LocalDateTime.now());
-			return "menu";
-		}else {
-			m.addAttribute("msg", "名前またはパスワードが間違っています");
+				session.setAttribute("loginId", loginUser.getId());
+				session.setAttribute("loginName", loginUser.getName());
+				session.setAttribute("loginTime", LocalDateTime.now());
+				m.addAttribute("employee_name", loginUser.getName());
+				m.addAttribute("loginTime",  LocalDateTime.now());
+				return "menu";
+			}else {
+				m.addAttribute("msg", "名前またはパスワードが間違っています");
+				return "login";
+			}
+		}catch(NumberFormatException e) {
+			m.addAttribute("msg", "数字で入力してください");
 			return "login";
 		}
 	}

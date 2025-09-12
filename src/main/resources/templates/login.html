@@ -8,10 +8,12 @@
 <body>
 	<div class="login">
 		<h2>社員管理ログイン</h1>
-		<div th:if="${msg}" th:text="${msg}" class="msg"></div>
+			<script>
+				alert('[[${msg}]]');
+			</script>
 		<form action="/menu" method="post">
-			<label>名前</label><br>
-			<input type="text" name="employee_name"><br>
+			<label>ID</label><br>
+			<input type="text" name="employee_id"><br>
 			<label>パスワード</label><br>
 			<input type="password" name="passwords"><br>
 			<input type="submit" value="ログイン">

@@ -5,6 +5,6 @@ import org.apache.ibatis.annotations.Select;
 
 @Mapper
 public interface LoginMapper {
-	@Select("SELECT * FROM employee WHERE employee_name = #{employee_name} AND passwords = #{passwords}")
-	Login selectNameAndPassword(String employee_name, String passwords);
+	@Select("SELECT * FROM employee WHERE employee_id = #{employee_id} AND passwords = #{passwords}")
+	Login selectNameAndPassword(int employee_id, String passwords);
 }
