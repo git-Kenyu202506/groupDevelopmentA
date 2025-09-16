@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>社員登録</title>
+</head>
+<body>
+<h1>社員登録画面</h1>
+<p>こちらは社員登録画面です。</p>
+<div class="login-info" th:if="${session.loginName != null}">
+      ログイン名: <span th:text="${session.loginName}"></span><br>
+      ログイン時刻: <span th:text="${session.loginTime}"></span>
+  </div>
+
+<form th:action="@{/employees}" method="get">
+    <button type="submit">社員検索に戻る</button>
+</form>
+</body>
+</html>
