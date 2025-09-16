@@ -28,6 +28,12 @@ public class LoginController {
 	public String enu(Model m,
 									@RequestParam("employee_id") String employee_id,
 									@RequestParam("passwords") String passwords) {
+
+		if(employee_id == "" || passwords == "") {
+			m.addAttribute("msg", "入力されていません");
+			return "login";
+		}
+		
 		try {
 			int loginId = Integer.parseInt(employee_id);
 			Login loginUser = ls.login(loginId, passwords);
