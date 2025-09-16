@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>社員情報削除</title>
+<link rel="stylesheet" href="deleteForm.css" />
+</head>
+<body>
+	<header>
+		<div th:text="${session.loginName} + 'さん'"></div>
+		<div th:text="${#temporals.format(session.loginTime, 'yyyy/MM/dd HH:mm:ss')}"></div>
+	</header>
+	<h2>社員情報削除画面</h2>
+	<script th:if="${msg != null}">
+		alert('[[${msg}]]');
+	</script>
+	<div class="deleteForm">
+		<form action="/delete" method="post">
+			<label>社員ID</label>
+				<input type="text" name="employee_id" th:value="${employee_ids}"><br>
+				<input type="hidden" name="returnPage" value="deleteForm">
+			<input type="submit" value="確定" class="kakutei">
+		</form>
+		<form th:action="@{/menu}" method="get" class="modoru">
+			<input type="submit" value="戻る">
+		</form>
+	</div>
+	<div class="msg">
+		<div id="underLine"></div>
+	</div>
+	<footer>JavaStudy TeamA©︎2025</footer>
+</body>
+</html>
