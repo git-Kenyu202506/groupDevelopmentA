@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>社員削除確認</title>
+</head>
+<body><div class="login-info" th:if="${session.loginName != null}">
+      ログイン名: <span th:text="${session.loginName}"></span><br>
+      ログイン時刻: <span th:text="${session.loginTime}"></span>
+  </div>
+<h1>社員削除確認</h1>
+
+<div th:if="${ids != null and !ids.isEmpty()}">
+    <p>以下の社員を削除します：</p>
+    <ul>
+        <li th:each="id : ${ids}" th:text="${id}"></li>
+    </ul>
+   
+  
+</div>
+
+<div th:if="${ids == null or ids.isEmpty()}">
+    <p>削除対象の社員が選択されていません。</p>
+</div>
+
+<form th:action="@{/employees}" method="get">
+    <button type="submit">検索画面に戻る</button>
+</form>
+
+</body>
+</html>

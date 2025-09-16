@@ -1,0 +1,199 @@
+@charset "UTF-8";
+
+
+
+
+
+h1 {
+	color: red;
+	padding-bottom: 10px;
+
+	margin-bottom: 5px;
+}
+
+.header {
+	display: flex;
+	
+	justify-content: space-between;
+
+	align-items: center;
+	
+	margin-bottom: 16px;
+	border-bottom: 2px solid black;
+
+}
+
+
+
+.login-info {
+	text-align: right;
+	font-size: 14px;
+	color: gray;
+}
+
+
+.search-form {
+
+	display: flex;
+	gap: 10px;
+	align-items: flex-start;
+	justify-content: center;
+	
+	padding: 1% 3%;
+}
+
+
+.form-inputs {
+	flex: 9;
+	display: flex;
+	gap: 70px;
+	font-size: 1.1rem;
+
+}
+
+
+.form-col {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+}
+
+
+.form-col label {
+	margin-bottom: 10px;
+	display: flex;
+	align-items: center;
+	gap: 5px;
+	font-size: 25px;
+	font-weight: bold;
+
+}
+
+
+
+.form-inputs input[type="number"] {
+	padding: 20px 24px;
+	font-size: 14px;
+	width: 150px;
+}
+
+.form-inputs input[type="text"] {
+	height: 36px;
+
+	padding: 20px 24px;
+
+	box-sizing: border-box;
+	
+	font-size: 14px;
+
+}
+
+
+.form-buttons {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+
+}
+
+
+
+
+.insert-btn {
+	background-color: yellow;
+
+
+}
+
+.orange-btn {
+	background-color: orange;
+	padding: 12px 24px;
+	font-size: 16px;
+
+}
+
+.reset-btn {
+	background-color: white;
+	padding: 12px 24px;
+	font-size: 16px;
+}
+
+.delete-btn {
+	background-color: yellow;
+	padding: 12px 35px;
+
+	font-size: 16px;
+
+
+}
+
+.update-btn {
+	background-color: white;
+
+}
+
+
+.table-box {
+	padding-top: 5px;
+	border-top: 2px solid black;
+
+	padding: 1% 3%;
+}
+
+.table-wrapper {
+	position: relative;
+
+}
+
+.delete-btn-wrapper {
+	position: absolute;
+	top: 0;
+	right: 0;
+	margin: 4px;
+
+}
+
+footer p {
+	text-align: right;
+}
+
+
+.employee-table th,
+.employee-table td {
+	border: 1px solid #ccc;
+	padding: 6px;
+	text-align: center;
+}
+
+.table-box p {
+	margin: 1px auto;
+}
+
+
+.table-with-buttons {
+	display: flex;
+	align-items: flex-start;
+	gap: 20px;
+}
+
+
+
+.employee-table {
+
+	width: 86%;
+	border-collapse: collapse;
+}
+
+
+
+.employee-table th {
+	background-color: #f2f2f2;
+}
+
+
+.button-col {
+	display: row;
+	flex-direction: column;
+	gap: 10px;
+}
